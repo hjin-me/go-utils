@@ -19,18 +19,6 @@ var (
 	loggerErr *log.Logger
 )
 
-// color
-var (
-//green        = string([]byte{27, 91, 57, 55, 59, 53, 50, 109})
-//white  = string([]byte{27, 91, 57, 48, 59, 53, 55, 109})
-//yellow = string([]byte{27, 91, 57, 55, 59, 53, 51, 109})
-//red    = string([]byte{27, 91, 57, 55, 59, 53, 49, 109})
-//blue   = string([]byte{27, 91, 57, 55, 59, 53, 53, 109})
-//magenta      = string([]byte{27, 91, 57, 55, 59, 53, 53, 109})
-//cyan         = string([]byte{27, 91, 57, 55, 59, 53, 54, 109})
-//reset = string([]byte{27, 91, 48, 109})
-//disableColor = false
-)
 var color bool
 var logLevel Level = Lmax
 var cancel context.CancelFunc
@@ -115,6 +103,7 @@ func outputf(level Level, format string, v ...interface{}) {
 func SetLogLevel(level Level) {
 	logLevel = level
 }
+
 // When Log write failed, it will call cancel.
 // context.Context should be Done. others goroutine should finish their jobs and exit safety.
 func SetCancel(fn context.CancelFunc) {
