@@ -2,7 +2,6 @@ package config
 
 import (
 	"errors"
-	"flag"
 	"os"
 	"reflect"
 )
@@ -36,17 +35,19 @@ func Get(key string, value interface{}) error {
 	if !val.CanAddr() {
 		return errors.New("result must be addressable (a pointer)")
 	}
-	//rValue.Convert(rValue.Type())
-	//rValue.Pointer()
-	//ptr := reflect.ValueOf(value).Pointer()
 	cfg, ok := configMap[key]
 	if !ok {
-		value = nil
+		val.Set(reflect.Zero(val.Type()))
 		return errors.New("key[" + key + "] is not exits")
 	}
 
 	cp := cfg.Value
-	val.Set(reflect.ValueOf(cp))
+	if reflect.TypeOf(cp).AssignableTo(val.Type()) {
+		val.Set(reflect.ValueOf(cp))
+	} else {
+		return errors.New("config's type [" + reflect.TypeOf(cp).Kind().String() + "] is not assignable to value's type [" +
+			val.Type().Kind().String() + "]")
+	}
 	return nil
 }
 func Set(key string, value interface{}) {
@@ -57,14 +58,6 @@ func Set(key string, value interface{}) {
 }
 
 func Parse() {
-	pwd, _ := os.Getwd()
-	distPath := flag.String("d", pwd, "dist 目录的完整路径")
-	flag.Parse()
-
-	Set("distPath", *distPath)
-
-	fromEnv("DB_DSN", "JIRA_BASIC_AUTH")
-
 	for _, value := range configMap {
 		if value.Required && value.Value == nil {
 			panic(ErrConfigRequired)
@@ -72,7 +65,7 @@ func Parse() {
 	}
 }
 
-func fromEnv(keys ...string) {
+func FromEnv(keys ...string) {
 	for _, key := range keys {
 		v := os.Getenv(key)
 		if v != "" {
