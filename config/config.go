@@ -58,10 +58,14 @@ func Set(key string, value interface{}) {
 }
 
 func Parse() {
-	for _, value := range configMap {
+	missingKeys := make([]string, 0)
+	for key, value := range configMap {
 		if value.Required && value.Value == nil {
-			panic(ErrConfigRequired)
+			missingKeys = append(missingKeys, key)
 		}
+	}
+	if len(missingKeys) > 0 {
+		panic(NewErr(missingKeys))
 	}
 }
 
