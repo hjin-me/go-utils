@@ -25,6 +25,12 @@ func Require(key string) {
 	cfg.Required = true
 	configMap[key] = cfg
 }
+func MustGet(key string, value interface{}) {
+	err := Get(key, value)
+	if err != nil {
+		panic(err)
+	}
+}
 
 func Get(key string, value interface{}) error {
 	val := reflect.ValueOf(value)
