@@ -5,19 +5,21 @@ import (
 	"context"
 	"errors"
 	"io"
+	"log"
 	"strings"
 	"testing"
 )
 
 func TestOutput(t *testing.T) {
-	SetLogLevel(Ldebug)
+	SetLogLevel(LDebug)
 	var bf bytes.Buffer
-	SetOutput(&bf, &bf)
+	out := log.New(&bf, "", log.Llongfile)
+	SetOutput(out, out)
 
 	var s string
 	Debug("123", "abc")
 	s = bf.String()
-	if strings.Index(s, "DEBUG") == -1 {
+	if strings.Index(s, "DBUG") == -1 {
 		t.Error("Not Output Level", s)
 	}
 	if strings.Index(s, "123") == -1 {
@@ -27,10 +29,10 @@ func TestOutput(t *testing.T) {
 	t.Log(bf.String())
 
 	// Test Level
-	SetLogLevel(Lerror)
+	SetLogLevel(LError)
 	Debug("456", "xyz")
 	s = bf.String()
-	if strings.Index(s, "DEBUG") > -1 {
+	if strings.Index(s, "DBUG") > -1 {
 		t.Error("Not Output Level", s)
 	}
 	if strings.Index(s, "123") > -1 {
@@ -50,10 +52,11 @@ func (f *FatalWriter) Write(p []byte) (n int, err error) {
 
 func TestSetCancel(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
-	SetLogLevel(Ldebug)
+	SetLogLevel(LDebug)
 
 	var fatalWriter = FatalWriter{}
-	SetOutput(&fatalWriter, &fatalWriter)
+	out := log.New(&fatalWriter, "", log.Llongfile)
+	SetOutput(out, out)
 	SetCancel(cancel)
 
 	go func() {
