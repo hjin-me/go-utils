@@ -7,6 +7,7 @@ func Wrap(reqId string, moduleName string) Logger {
 	logger.SetFormatter(func(v ...interface{}) (bytes []byte, e error) {
 		return Format(reqId, moduleName, v...)
 	})
+	logger.DepthIncrease(-1)
 	return logger
 }
 

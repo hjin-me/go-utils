@@ -69,3 +69,51 @@ func TestSetCancel(t *testing.T) {
 	}
 	t.Log("success")
 }
+
+func TestDepth(t *testing.T) {
+	var bf bytes.Buffer
+	out := log.New(&bf, "", log.Llongfile)
+	SetOutput(out, out)
+
+	// normal
+	var s string
+	Debug("123", "abc")
+	s = bf.String()
+	if strings.Index(s, "log_test.go") == -1 {
+		t.Error("depth is not right", s)
+	}
+	if strings.Index(s, "DBUG") == -1 {
+		t.Error("Not Output Level", s)
+	}
+	if strings.Index(s, "123") == -1 {
+		t.Error("Not Output 123", s)
+	}
+	bf.Reset()
+	t.Log(bf.String())
+
+	// format
+	Debugf("test, %d", 1)
+	s = bf.String()
+	if strings.Index(s, "log_test.go") == -1 {
+		t.Error("depth is not right", s)
+	}
+	bf.Reset()
+
+	// wrapped
+	defaultLogger.SetOutput(out, out)
+	logger := Wrap("123123", "456456456")
+	logger.Debug("123", "abc")
+	s = bf.String()
+	if strings.Index(s, "log_test.go") == -1 {
+		t.Error("depth is not right", s)
+	}
+	bf.Reset()
+
+	// wrapped format
+	logger.Debugf("123 %s", "abc")
+	s = bf.String()
+	if strings.Index(s, "log_test.go") == -1 {
+		t.Error("depth is not right", s)
+	}
+	bf.Reset()
+}

@@ -74,7 +74,7 @@ func (l *loggerIns) SetFormatter(f Formatter) {
 	l.formatter = f
 }
 func (l *loggerIns) DepthIncrease(delta int) {
-	l.depth = l.depth + 1
+	l.depth = l.depth + delta
 }
 func (l *loggerIns) Clone() *loggerIns {
 	return New(l.level, l.out, l.errOut)
@@ -197,7 +197,7 @@ func New(level Level, out, errOut *log.Logger) *loggerIns {
 	logger := loggerIns{}
 	logger.SetLogLevel(level)
 	logger.SetOutput(out, errOut)
-	logger.depth = 3
+	logger.depth = 4
 	logger.SetFormatter(defaultFormatter)
 	return &logger
 }
