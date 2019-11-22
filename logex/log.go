@@ -42,7 +42,7 @@ func (l Level) String() string {
 	return ""
 }
 
-var defaultLogger *loggerIns = &loggerIns{}
+var defaultLogger = &loggerIns{}
 
 type Formatter func(v ...interface{}) ([]byte, error)
 
@@ -77,7 +77,10 @@ func (l *loggerIns) DepthIncrease(delta int) {
 	l.depth = l.depth + delta
 }
 func (l *loggerIns) Clone() *loggerIns {
-	return New(l.level, l.out, l.errOut)
+	n := New(l.level, l.out, l.errOut)
+	n.SetName(l.name)
+	n.color = l.color
+	return n
 }
 func defaultFormatter(v ...interface{}) ([]byte, error) {
 	switch len(v) {
@@ -135,7 +138,7 @@ func (l *loggerIns) output(level Level, callDepth int, v ...interface{}) {
 		err = l.out.Output(callDepth, msg)
 	}
 	if err != nil {
-		fmt.Printf("[%s][%s][FATAL]%v", l.name, t, err)
+		fmt.Printf("[%s][%s][FTAL]%v", l.name, t, err)
 		l.cancel()
 	}
 }
@@ -206,7 +209,6 @@ func init() {
 	var flag int
 	var level Level
 	var color bool
-
 	if os.Getenv("LOG_MODE") != "production" {
 		color = true
 		level = LDebug

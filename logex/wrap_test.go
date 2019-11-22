@@ -16,7 +16,6 @@ func TestWrap(t *testing.T) {
 	logger := Wrap("aaaa", "mmmmm")
 	logger.Info("x", "y")
 	{
-
 		s := bf.String()
 		if strings.Index(s, "INFO") == -1 {
 			t.Error("Not Output Level", s)
@@ -29,6 +28,12 @@ func TestWrap(t *testing.T) {
 		}
 		if strings.Index(s, `"info":["x","y"]`) == -1 {
 			t.Error("info is not [x,y]", s)
+		}
+		if strings.Index(s, "[default]") == -1 {
+			t.Error("lost name")
+		}
+		if strings.Index(s, "\033[0;36m") == -1 {
+			t.Error("lost color", s)
 		}
 		bf.Reset()
 	}
