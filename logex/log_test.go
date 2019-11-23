@@ -117,3 +117,25 @@ func TestDepth(t *testing.T) {
 	}
 	bf.Reset()
 }
+
+func TestOutputError(t *testing.T) {
+	var bf bytes.Buffer
+	out := log.New(&bf, "", log.Llongfile)
+	SetOutput(out, out)
+
+	// normal
+	var s string
+	Debug(errors.New("some err"))
+	s = bf.String()
+	if strings.Index(s, "log_test.go") == -1 {
+		t.Error("depth is not right", s)
+	}
+	if strings.Index(s, "DBUG") == -1 {
+		t.Error("Not Output Level", s)
+	}
+	if strings.Index(s, "some err") == -1 {
+		t.Error("Not Output err.Error()", s)
+	}
+	bf.Reset()
+	t.Log(bf.String())
+}

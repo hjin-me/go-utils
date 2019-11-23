@@ -2,6 +2,7 @@ package logex
 
 import (
 	"bytes"
+	"errors"
 	"log"
 	"strings"
 	"testing"
@@ -69,6 +70,23 @@ func TestWrap(t *testing.T) {
 		}
 		if strings.Index(s, `"info"`) != -1 {
 			t.Error("info should not exist", s)
+		}
+		bf.Reset()
+	}
+
+	{
+		// normal
+		var s string
+		logger.Debug(errors.New("some err"))
+		s = bf.String()
+		if strings.Index(s, "wrap_test.go") == -1 {
+			t.Error("depth is not right", s)
+		}
+		if strings.Index(s, "DBUG") == -1 {
+			t.Error("Not Output Level", s)
+		}
+		if strings.Index(s, "some err") == -1 {
+			t.Error("Not Output err.Error()", s)
 		}
 		bf.Reset()
 	}

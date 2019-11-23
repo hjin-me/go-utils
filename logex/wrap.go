@@ -20,6 +20,11 @@ type UniversalLog struct {
 // 按照项目规范格式化代码
 func Format(reqId string, moduleName string, v ...interface{}) ([]byte, error) {
 	data := UniversalLog{ReqId: reqId, ModuleName: moduleName}
+	for i, _ := range v {
+		if errV, ok := v[i].(error); ok {
+			v[i] = errV.Error()
+		}
+	}
 	switch len(v) {
 	case 0:
 		// 啥都不做

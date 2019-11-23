@@ -83,6 +83,11 @@ func (l *loggerIns) Clone() *loggerIns {
 	return n
 }
 func defaultFormatter(v ...interface{}) ([]byte, error) {
+	for i, _ := range v {
+		if errV, ok := v[i].(error); ok {
+			v[i] = errV.Error()
+		}
+	}
 	switch len(v) {
 	case 0:
 		return nil, nil
