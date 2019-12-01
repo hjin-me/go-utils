@@ -26,6 +26,11 @@ github.com/fatih/structs
 github.com/flosch/pongo2
 # github.com/gavv/httpexpect v2.0.0+incompatible
 github.com/gavv/httpexpect
+# github.com/go-playground/locales v0.13.0
+github.com/go-playground/locales
+github.com/go-playground/locales/currency
+# github.com/go-playground/universal-translator v0.17.0
+github.com/go-playground/universal-translator
 # github.com/google/go-querystring v1.0.0
 github.com/google/go-querystring/query
 # github.com/gorilla/websocket v1.4.0
@@ -75,6 +80,8 @@ github.com/kataras/pio/terminal
 github.com/klauspost/compress/flate
 github.com/klauspost/compress/gzip
 github.com/klauspost/compress/zlib
+# github.com/leodido/go-urn v1.2.0
+github.com/leodido/go-urn
 # github.com/microcosm-cc/bluemonday v1.0.2
 github.com/microcosm-cc/bluemonday
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
@@ -91,7 +98,7 @@ github.com/ryanuber/columnize
 github.com/sergi/go-diff/diffmatchpatch
 # github.com/shurcooL/sanitized_anchor_name v1.0.0
 github.com/shurcooL/sanitized_anchor_name
-# github.com/stretchr/testify v1.3.0
+# github.com/stretchr/testify v1.4.0
 github.com/stretchr/testify/assert
 github.com/stretchr/testify/require
 # github.com/valyala/bytebufferpool v1.0.0
@@ -122,5 +129,7 @@ golang.org/x/net/html/atom
 golang.org/x/net/publicsuffix
 # golang.org/x/sys v0.0.0-20190626221950-04f50cda93cb
 golang.org/x/sys/unix
+# gopkg.in/go-playground/validator.v9 v9.30.2
+gopkg.in/go-playground/validator.v9
 # gopkg.in/yaml.v2 v2.2.4
 gopkg.in/yaml.v2
