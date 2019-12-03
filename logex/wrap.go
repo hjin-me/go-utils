@@ -2,6 +2,7 @@ package logex
 
 import (
 	"encoding/json"
+	"reflect"
 )
 
 func Wrap(reqId string, moduleName string) Logger {
@@ -34,6 +35,14 @@ func Format(reqId string, moduleName string, v ...interface{}) ([]byte, error) {
 		data.Info = v[0]
 	default:
 		data.Info = v
+	}
+	rv := reflect.ValueOf(data.Info)
+	if rv.Kind() != reflect.String {
+		b, err := json.Marshal(data.Info)
+		if err != nil {
+			Warningf("format log failed. req_id is %s, err is %w", reqId, err)
+		}
+		data.Info = string(b)
 	}
 	b, err := json.Marshal(data)
 	if err != nil {
