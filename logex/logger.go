@@ -1,6 +1,9 @@
 package logex
 
 type Logger interface {
+	Statsf(format string, v ...interface{})
+	Stats(v ...interface{})
+
 	Fatalf(format string, v ...interface{})
 
 	// Fatal is equivalent to Print() for FATAL-level log.

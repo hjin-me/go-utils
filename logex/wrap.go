@@ -1,6 +1,8 @@
 package logex
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 func Wrap(reqId string, moduleName string) Logger {
 	logger := defaultLogger.Clone()

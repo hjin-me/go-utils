@@ -138,4 +138,20 @@ func TestOutputError(t *testing.T) {
 	}
 	bf.Reset()
 	t.Log(bf.String())
+	{
+		var s string
+		Stats(errors.New("some err"))
+		s = bf.String()
+		if strings.Index(s, "log_test.go") == -1 {
+			t.Error("depth is not right", s)
+		}
+		if strings.Index(s, "STAT") == -1 {
+			t.Error("Not Output Level", s)
+		}
+		if strings.Index(s, "some err") == -1 {
+			t.Error("Not Output err.Error()", s)
+		}
+		bf.Reset()
+		t.Log(bf.String())
+	}
 }

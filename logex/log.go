@@ -18,6 +18,7 @@ type Level uint
 
 const (
 	LNone Level = iota
+	LStatistics
 	LFatal
 	LError
 	LWarning
@@ -28,6 +29,8 @@ const (
 
 func (l Level) String() string {
 	switch l {
+	case LStatistics:
+		return "STAT"
 	case LFatal:
 		return "FTAL"
 	case LError:
@@ -135,6 +138,8 @@ func (l *loggerIns) output(level Level, callDepth int, v ...interface{}) {
 		fallthrough
 	case LError:
 		err = l.errOut.Output(callDepth, msg)
+	case LStatistics:
+		fallthrough
 	case LWarning:
 		fallthrough
 	case LInfo:
@@ -149,6 +154,13 @@ func (l *loggerIns) output(level Level, callDepth int, v ...interface{}) {
 }
 func (l *loggerIns) outputf(level Level, format string, v ...interface{}) {
 	l.output(level, l.depth+1, fmt.Sprintf(format, v...))
+}
+func (l *loggerIns) Statsf(format string, v ...interface{}) {
+	l.outputf(LStatistics, format, v...)
+}
+
+func (l *loggerIns) Stats(v ...interface{}) {
+	l.output(LStatistics, l.depth, v...)
 }
 
 // Fatalf is equivalent to Printf() for FATAL-level log.
@@ -251,6 +263,16 @@ func SetLogLevel(level Level) {
 // context.Context should be Done. others goroutine should finish their jobs and exit safety.
 func SetCancel(fn context.CancelFunc) {
 	defaultLogger.SetCancel(fn)
+}
+
+// Fatalf is equivalent to Printf() for FATAL-level log.
+func Statsf(format string, v ...interface{}) {
+	defaultLogger.Statsf(format, v...)
+}
+
+// Fatalf is equivalent to Printf() for FATAL-level log.
+func Stats(v ...interface{}) {
+	defaultLogger.Stats(v...)
 }
 
 // Fatalf is equivalent to Printf() for FATAL-level log.

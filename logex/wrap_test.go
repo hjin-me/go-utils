@@ -90,4 +90,20 @@ func TestWrap(t *testing.T) {
 		}
 		bf.Reset()
 	}
+	{
+		// statistics
+		var s string
+		logger.Stats(errors.New("some err"))
+		s = bf.String()
+		if strings.Index(s, "wrap_test.go") == -1 {
+			t.Error("depth is not right", s)
+		}
+		if strings.Index(s, "STAT") == -1 {
+			t.Error("Not Output Level", s)
+		}
+		if strings.Index(s, "some err") == -1 {
+			t.Error("Not Output err.Error()", s)
+		}
+		bf.Reset()
+	}
 }
