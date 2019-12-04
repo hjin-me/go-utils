@@ -37,7 +37,7 @@ func Format(reqId string, moduleName string, v ...interface{}) ([]byte, error) {
 		data.Info = v
 	}
 	rv := reflect.ValueOf(data.Info)
-	if rv.Kind() != reflect.String {
+	if rv.Kind() != reflect.String && data.Info != nil {
 		b, err := json.Marshal(data.Info)
 		if err != nil {
 			Warningf("format log failed. req_id is %s, err is %w", reqId, err)

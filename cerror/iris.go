@@ -40,7 +40,7 @@ func ResponseError(ctx iris.Context, err Error) {
 
 func ResponseSuccess(ctx iris.Context, data interface{}) {
 	ctx.StatusCode(http.StatusOK)
-	resp := iris.Map{"err_code": successCode.c, "err_msg": ""}
+	resp := iris.Map{"err_code": successCode, "err_msg": ""}
 	if data != nil {
 		resp["data"] = data
 	}

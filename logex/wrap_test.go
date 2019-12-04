@@ -27,7 +27,7 @@ func TestWrap(t *testing.T) {
 		if strings.Index(s, `"module":"mmmmm"`) == -1 {
 			t.Error("module name is not mmmmm", s)
 		}
-		if strings.Index(s, `"info":["x","y"]`) == -1 {
+		if strings.Index(s, `"info":"[\"x\",\"y\"]"`) == -1 {
 			t.Error("info is not [x,y]", s)
 		}
 		if strings.Index(s, "[default]") == -1 {

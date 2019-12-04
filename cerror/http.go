@@ -32,7 +32,7 @@ func HttpResponseError(w http.ResponseWriter, err Error) {
 
 func HttpResponseSuccess(w http.ResponseWriter, data interface{}) {
 	w.WriteHeader(http.StatusOK)
-	resp := iris.Map{"err_code": successCode.c, "err_msg": ""}
+	resp := iris.Map{"err_code": successCode, "err_msg": ""}
 	if data != nil {
 		resp["data"] = data
 	}
