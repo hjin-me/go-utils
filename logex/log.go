@@ -238,10 +238,10 @@ func init() {
 		level = LInfo
 	}
 	loggerOut := log.New(os.Stdout, "", flag)
-	loggerErr := log.New(os.Stderr, "", flag)
-	defaultLogger = New(level, loggerOut, loggerErr)
+	//loggerErr := log.New(os.Stderr, "", flag)
+	defaultLogger = New(level, loggerOut, loggerOut)
 	defaultLogger.color = color
-	defaultLogger.SetOutput(loggerOut, loggerErr)
+	defaultLogger.SetOutput(loggerOut, loggerOut)
 	defaultLogger.SetName("default")
 	//defaultLogger.DepthIncrease(1)
 	defaultLogger.SetCancel(func() {
