@@ -2,11 +2,12 @@ package cerror
 
 import (
 	"errors"
+	"net/http"
+	"strings"
+
 	"github.com/hjin-me/go-utils/logex"
 	"github.com/kataras/iris/v12"
 	"gopkg.in/go-playground/validator.v9"
-	"net/http"
-	"strings"
 )
 
 func ParseValidateError(err error) string {
@@ -40,7 +41,7 @@ func ResponseError(ctx iris.Context, err Error) {
 
 func ResponseSuccess(ctx iris.Context, data interface{}) {
 	ctx.StatusCode(http.StatusOK)
-	resp := iris.Map{"err_code": successCode, "err_msg": ""}
+	resp := map[string]interface{}{"err_code": successCode, "err_msg": ""}
 	if data != nil {
 		resp["data"] = data
 	}

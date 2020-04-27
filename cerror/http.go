@@ -3,11 +3,11 @@ package cerror
 import (
 	"encoding/json"
 	"errors"
-	"github.com/hjin-me/go-utils/logex"
-	"github.com/kataras/iris/v12"
-	"gopkg.in/go-playground/validator.v9"
 	"net/http"
 	"strings"
+
+	"github.com/hjin-me/go-utils/logex"
+	"gopkg.in/go-playground/validator.v9"
 )
 
 func HttpResponseError(w http.ResponseWriter, err Error) {
@@ -32,7 +32,7 @@ func HttpResponseError(w http.ResponseWriter, err Error) {
 
 func HttpResponseSuccess(w http.ResponseWriter, data interface{}) {
 	w.WriteHeader(http.StatusOK)
-	resp := iris.Map{"err_code": successCode, "err_msg": ""}
+	resp := map[string]interface{}{"err_code": successCode, "err_msg": ""}
 	if data != nil {
 		resp["data"] = data
 	}
@@ -48,7 +48,7 @@ func HttpResponseSuccess(w http.ResponseWriter, data interface{}) {
 
 func HttpResponseSuccessWithCode(w http.ResponseWriter, errCode int, data interface{}) {
 	w.WriteHeader(http.StatusOK)
-	resp := iris.Map{"err_code": errCode, "err_msg": ""}
+	resp := map[string]interface{}{"err_code": errCode, "err_msg": ""}
 	if data != nil {
 		resp["data"] = data
 	}
