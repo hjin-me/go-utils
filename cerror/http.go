@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/hjin-me/go-utils/logex"
+	"github.com/hjin-me/go-utils/v2/logex"
 	"gopkg.in/go-playground/validator.v9"
 )
 

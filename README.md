@@ -7,6 +7,5 @@
 使用方法
 
 ```go
-logex.SetName("logname")
-logger := logex.Wrap("request_id", "module name")
+
 ```
