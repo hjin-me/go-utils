@@ -3,6 +3,7 @@ package logex
 import (
 	"os"
 	"reflect"
+	"sync"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -23,4 +24,21 @@ func Init(fields logrus.Fields, prod bool) {
 		}
 	}
 	defaultLogger = logIns.WithFields(fields)
+	mutex.Unlock()
+	p = true
+}
+
+var mutex sync.Mutex
+var p = false
+
+func init() {
+	mutex.Lock()
+}
+
+func Ensure() *logrus.Entry {
+	if !p {
+		mutex.Lock()
+		defer mutex.Unlock()
+	}
+	return defaultLogger
 }
