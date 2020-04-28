@@ -11,6 +11,11 @@ import (
 
 var defaultLogger *logrus.Entry
 
+func init() {
+	logIns := logrus.New()
+	defaultLogger = logIns.WithField("_info_", "logex.Init() first")
+}
+
 // prod will output json
 func Init(fields logrus.Fields, prod bool) {
 	logIns := logrus.New()
