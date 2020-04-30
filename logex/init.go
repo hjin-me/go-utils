@@ -21,8 +21,9 @@ func Init(fields logrus.Fields, prod bool) {
 	logIns := logrus.New()
 	logIns.SetOutput(os.Stdout)
 	if prod {
-		logIns.SetReportCaller(true)
 		logIns.SetFormatter(&logrus.JSONFormatter{TimestampFormat: time.RFC3339Nano})
+	} else {
+		logIns.SetReportCaller(true)
 	}
 	for s, i := range fields {
 		if reflect.ValueOf(i).IsZero() {
