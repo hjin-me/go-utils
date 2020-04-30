@@ -9,11 +9,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var defaultLogger *logrus.Entry
+var Logger *logrus.Entry
 
 func init() {
-	logIns := logrus.New()
-	defaultLogger = logIns.WithField("_info_", "logex.Init() first")
+	Logger = logrus.WithField("_info_", "logex.Init() first")
 }
 
 // prod will output json
@@ -30,7 +29,7 @@ func Init(fields logrus.Fields, prod bool) {
 			delete(fields, s)
 		}
 	}
-	defaultLogger = logIns.WithFields(fields)
+	Logger = logIns.WithFields(fields)
 	mutex.Unlock()
 	p = true
 }
@@ -47,5 +46,5 @@ func Ensure() *logrus.Entry {
 		mutex.Lock()
 		defer mutex.Unlock()
 	}
-	return defaultLogger
+	return Logger
 }
