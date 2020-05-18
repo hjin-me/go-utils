@@ -29,6 +29,7 @@ func TestEnsure(t *testing.T) {
 		go func() {
 			time.Sleep(100 * time.Millisecond)
 			Init(nil, false)
+			Logger.Debug("debug log")
 		}()
 
 		select {
@@ -37,5 +38,13 @@ func TestEnsure(t *testing.T) {
 		case <-time.After(2 * time.Second):
 			t.Error("ensure not trigger")
 		}
+	})
+	t.Run("debug log", func(t *testing.T) {
+		Init(nil, false)
+		Logger.Debug("some debug log")
+	})
+	t.Run("product log", func(t *testing.T) {
+		Init(nil, true)
+		Logger.Debug("some debug log")
 	})
 }

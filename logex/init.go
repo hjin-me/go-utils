@@ -23,6 +23,7 @@ func Init(fields logrus.Fields, prod bool) {
 		logIns.SetFormatter(&logrus.JSONFormatter{TimestampFormat: time.RFC3339Nano})
 	} else {
 		logIns.SetReportCaller(true)
+		logIns.Level = logrus.DebugLevel
 	}
 	for s, i := range fields {
 		if reflect.ValueOf(i).IsZero() {
