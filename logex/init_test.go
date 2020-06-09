@@ -20,7 +20,6 @@ func TestEnsure(t *testing.T) {
 		}
 	})
 	t.Run("ensure first", func(t *testing.T) {
-
 		ch := make(chan interface{})
 		defer close(ch)
 		go func() {

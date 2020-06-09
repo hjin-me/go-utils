@@ -10,20 +10,20 @@ import (
 )
 
 var Logger *logrus.Entry
+var logIns = logrus.New()
 
 func init() {
-	Logger = logrus.WithField("_info_", "logex.Init() first")
+	Logger = logIns.WithField("_info_", "logex.Init() first")
 }
 
 // prod will output json
 func Init(fields logrus.Fields, prod bool) {
-	logIns := logrus.New()
 	logIns.SetOutput(os.Stdout)
 	if prod {
 		logIns.SetFormatter(&logrus.JSONFormatter{TimestampFormat: time.RFC3339Nano})
 	} else {
 		logIns.SetReportCaller(true)
-		logIns.Level = logrus.DebugLevel
+		logIns.SetLevel(logrus.TraceLevel)
 	}
 	for s, i := range fields {
 		if reflect.ValueOf(i).IsZero() {

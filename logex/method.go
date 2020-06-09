@@ -118,3 +118,6 @@ func TraceField(traceId, module string) logrus.Fields {
 		"module":   module,
 	}
 }
+func SetLevel(lv logrus.Level) {
+	logIns.SetLevel(lv)
+}
