@@ -14,6 +14,9 @@ type ErrCode struct {
 func (e ErrCode) MarshalJSON() ([]byte, error) {
 	return []byte(strconv.FormatUint(uint64(e.c), 10)), nil
 }
+func (e ErrCode) Code() uint {
+	return e.c
+}
 
 func NewErrCode(code uint, httpStatusCode int) ErrCode {
 	return ErrCode{
