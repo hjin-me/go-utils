@@ -31,7 +31,10 @@ func Init(fields logrus.Fields, prod bool) {
 		}
 	}
 	Logger = logIns.WithFields(fields)
-	mutex.Unlock()
+	if !p {
+		mutex.Unlock()
+	}
+
 	p = true
 }
 

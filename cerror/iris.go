@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/hjin-me/go-utils/v2/logex"
 	"github.com/kataras/iris/v12"
-	"gopkg.in/go-playground/validator.v9"
 )
 
 func ParseValidateError(err error) string {

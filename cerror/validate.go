@@ -1,9 +1,10 @@
 package cerror
 
 import (
-	"gopkg.in/go-playground/validator.v9"
 	"reflect"
 	"strings"
+
+	"github.com/go-playground/validator/v10"
 )
 
 var validate = validator.New()

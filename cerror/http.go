@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/hjin-me/go-utils/v2/logex"
-	"gopkg.in/go-playground/validator.v9"
 )
 
 func HttpResponseError(w http.ResponseWriter, err Error) {

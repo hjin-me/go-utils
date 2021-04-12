@@ -46,4 +46,8 @@ func TestEnsure(t *testing.T) {
 		Init(nil, true)
 		Logger.Debug("some debug log")
 	})
+	t.Run("double init", func(t *testing.T) {
+		Init(nil, false)
+		Init(nil, false)
+	})
 }
