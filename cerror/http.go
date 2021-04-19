@@ -10,23 +10,43 @@ import (
 	"github.com/hjin-me/go-utils/v2/logex"
 )
 
-func HttpResponseError(w http.ResponseWriter, err Error) {
-	w.WriteHeader(err.StatusCode())
-	var vErrs validator.ValidationErrors
-	if errors.As(err.Unwrap(), &vErrs) {
-		errFields := make([]string, len(vErrs))
-		for i, e := range vErrs {
-			errFields[i] = e.Field()
+func HttpResponseError(w http.ResponseWriter, err error) {
+	var cErr Error
+	if errors.As(err, &cErr) {
+		w.WriteHeader(cErr.StatusCode())
+		var vErrs validator.ValidationErrors
+		if errors.As(cErr.Unwrap(), &vErrs) {
+			errFields := make([]string, len(vErrs))
+			for i, e := range vErrs {
+				errFields[i] = e.Field()
+			}
+			cErr.Msg = "request json validate failed. fields [" + strings.Join(errFields, ", ") + "] are illegal."
 		}
-		err.Msg = "request json validate failed. fields [" + strings.Join(errFields, ", ") + "] are illegal."
-	}
-	b, e := json.Marshal(err)
-	if e != nil {
-		logex.Warningf("json marshal failed, %v", err)
-	}
-	_, e = w.Write(b)
-	if e != nil {
-		logex.Warningf("response error failed, %v", err)
+		b, e := json.Marshal(cErr)
+		if e != nil {
+			logex.Warningf("json marshal failed, %v", cErr)
+		}
+		_, e = w.Write(b)
+		if e != nil {
+			logex.Warningf("response error failed, %v", cErr)
+		}
+	} else {
+		w.WriteHeader(http.StatusInternalServerError)
+		body := struct {
+			Code uint   `json:"err_code"`
+			Msg  string `json:"err_msg"`
+		}{
+			Code: internalErrCode,
+			Msg:  err.Error(),
+		}
+		b, e := json.Marshal(body)
+		if e != nil {
+			logex.Warningf("json marshal failed, %v", cErr)
+		}
+		_, e = w.Write(b)
+		if e != nil {
+			logex.Warningf("response error failed, %v", cErr)
+		}
 	}
 }
 

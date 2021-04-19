@@ -22,21 +22,38 @@ func ParseValidateError(err error) string {
 	return err.Error()
 }
 
-func ResponseError(ctx iris.Context, err Error) {
-	ctx.StatusCode(err.StatusCode())
-	var vErrs validator.ValidationErrors
-	if errors.As(err.Unwrap(), &vErrs) {
-		errFields := make([]string, len(vErrs))
-		for i, e := range vErrs {
-			logex.Debug(e.Tag(), " ", e.ActualTag())
-			errFields[i] = e.Field()
+func ResponseError(ctx iris.Context, err error) {
+	var cErr Error
+	if errors.As(err, &cErr) {
+		ctx.StatusCode(cErr.StatusCode())
+		var vErrs validator.ValidationErrors
+		if errors.As(cErr.Unwrap(), &vErrs) {
+			errFields := make([]string, len(vErrs))
+			for i, e := range vErrs {
+				logex.Debug(e.Tag(), " ", e.ActualTag())
+				errFields[i] = e.Field()
+			}
+			cErr.Msg = "request json validate failed. fields [" + strings.Join(errFields, ", ") + "] are illegal."
 		}
-		err.Msg = "request json validate failed. fields [" + strings.Join(errFields, ", ") + "] are illegal."
+		_, e := ctx.JSON(cErr)
+		if e != nil {
+			logex.Warningf("response error failed, %v", err)
+		}
+	} else {
+		ctx.StatusCode(http.StatusInternalServerError)
+		body := struct {
+			Code uint   `json:"err_code"`
+			Msg  string `json:"err_msg"`
+		}{
+			Code: internalErrCode,
+			Msg:  err.Error(),
+		}
+		_, e := ctx.JSON(body)
+		if e != nil {
+			logex.Warningf("response error failed, %v", err)
+		}
 	}
-	_, e := ctx.JSON(err)
-	if e != nil {
-		logex.Warningf("response error failed, %v", err)
-	}
+
 }
 
 func ResponseSuccess(ctx iris.Context, data interface{}) {
@@ -49,6 +66,10 @@ func ResponseSuccess(ctx iris.Context, data interface{}) {
 	if err != nil {
 		logex.Warningf("response error failed, %v", err)
 	}
+}
+
+func DefineInternalServerErrCode(c uint) {
+	internalErrCode = c
 }
 
 func DefineSuccessCode(code ErrCode) {

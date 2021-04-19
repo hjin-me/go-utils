@@ -3,6 +3,7 @@ package cerror
 import "strconv"
 
 var successCode = ErrCode{0, 200}
+var internalErrCode uint = 500
 
 type ErrCode struct {
 	// 错误码

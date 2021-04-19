@@ -1,6 +1,6 @@
 module github.com/hjin-me/go-utils/v2
 
-go 1.14
+go 1.16
 
 require (
 	github.com/ajg/form v1.5.1 // indirect
